@@ -1,30 +1,23 @@
 #!/bin/sh
-#################################################
-# AnripDdns v5.08+
-# Dynamic DNS using DNSPod API
-# Original by anrip
-# Edited by ProfFan
-# Edited By LLLVCS
-#################################################
+
 arIpAddress() {
-curltest=`which curl`
-if [ -z "$curltest" ] || [ ! -s "`which curl`" ] ; then
-    wget --no-check-certificate --quiet --output-document=- "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
-    #wget --no-check-certificate --quiet --output-document=- "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
-    #wget --no-check-certificate --quiet --output-document=- "ip.6655.com/ip.aspx" | grep -E -o '([0-9]+\.){3}[0-9]+'
-    #wget --no-check-certificate --quiet --output-document=- "ip.3322.net" | grep -E -o '([0-9]+\.){3}[0-9]+'
-else
-    curl -L -k -s "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
-    #curl -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
-    #curl -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
-    #curl -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
-fi
+	curltest=`which curl`
+	if [ -z "$curltest" ] || [ ! -s "`which curl`" ] ; then
+		wget --no-check-certificate --quiet --output-document=- "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
+		#wget --no-check-certificate --quiet --output-document=- "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+		#wget --no-check-certificate --quiet --output-document=- "ip.6655.com/ip.aspx" | grep -E -o '([0-9]+\.){3}[0-9]+'
+		#wget --no-check-certificate --quiet --output-document=- "ip.3322.net" | grep -E -o '([0-9]+\.){3}[0-9]+'
+	else
+		curl -L -k -s "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
+		#curl -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+		#curl -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
+		#curl -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
+	fi
 }
 
 arIpAddress=$(arIpAddress)
 
 # Get script dir
-# See: http://stackoverflow.com/a/29835459/4449544
 rreadlink() ( # Execute the function in a *subshell* to localize variables and the effect of `cd`.
 
   target=$1 fname= targetDir= CDPATH=
@@ -117,7 +110,7 @@ arDdnsInfo() {
 # Get data
 # arg: type data
 arApiPost() {
-    local agent="DDnspod/5.08+"
+    local agent="AnripDdns/5.07(mail@anrip.com)"
     local inter="https://dnsapi.cn/${1:?'Info.Version'}"
     if [ "x${arToken}" = "x" ]; then # undefine token
         local param="login_email=${arMail}&login_password=${arPass}&format=json&${2}"
@@ -174,7 +167,7 @@ arDdnsCheck() {
         if [ "$lastIP" != "$hostIP" ]; then
             postRS=$(arDdnsUpdate $1 $2)
             if [ $? -eq 0 ]; then
-                echo "PostRS: ${postRS}"
+                echo "postRS: ${postRS}"
                 return 0
             else
                 echo ${postRS}
