@@ -6,7 +6,7 @@
 # Edited by ProfFan
 # Edited By LLLVCS
 #################################################
-arIpAddress () {
+arIpAddress() {
 curltest=`which curl`
 if [ -z "$curltest" ] || [ ! -s "`which curl`" ] ; then
     wget --no-check-certificate --quiet --output-document=- "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
