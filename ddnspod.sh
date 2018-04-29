@@ -1,10 +1,11 @@
 #!/bin/sh
 
 #################################################
-# AnripDdns v5.08
+# AnripDdns v5.08+
 # Dynamic DNS using DNSPod API
-# Original by anrip<mail@anrip.com>, http://www.anrip.com/ddnspod
+# Original by anrip
 # Edited by ProfFan
+# Edited By LLLVCS
 #################################################
 
 # OS Detection
@@ -12,13 +13,20 @@ case $(uname) in
   'Linux')
     echo "Linux"
     arIpAddress() {
-        local extip
-        extip=$(ip -o -4 addr list | grep -Ev '\s(docker|lo)' | awk '{print $4}' | cut -d/ -f1 | grep -Ev '(^127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$)|(^10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$)|(^172\.1[6-9]{1}[0-9]{0,1}\.[0-9]{1,3}\.[0-9]{1,3}$)|(^172\.2[0-9]{1}[0-9]{0,1}\.[0-9]{1,3}\.[0-9]{1,3}$)|(^172\.3[0-1]{1}[0-9]{0,1}\.[0-9]{1,3}\.[0-9]{1,3}$)|(^192\.168\.[0-9]{1,3}\.[0-9]{1,3}$)')
-        if [ "x${extip}" = "x" ]; then
-	        extip=$(ip -o -4 addr list | grep -Ev '\s(docker|lo)' | awk '{print $4}' | cut -d/ -f1 )
-        fi
-        echo $extip
-    }
+        curltest=`which curl`
+	if [ -z "$curltest" ] || [ ! -s "`which curl`" ] ; then
+    wget --no-check-certificate --quiet --output-document=- "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #wget --no-check-certificate --quiet --output-document=- "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #wget --no-check-certificate --quiet --output-document=- "ip.6655.com/ip.aspx" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #wget --no-check-certificate --quiet --output-document=- "ip.3322.net" | grep -E -o '([0-9]+\.){3}[0-9]+'
+	else
+    #curl -L -k -s "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #curl -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    curl -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #curl -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
+	fi
+	}
+	arIpAddress=$(arIpAddress)
     ;;
   'FreeBSD')
     echo 'FreeBSD'
@@ -31,8 +39,20 @@ case $(uname) in
   'Darwin')
     echo "Mac"
     arIpAddress() {
-        ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
-    }
+        curltest=`which curl`
+	if [ -z "$curltest" ] || [ ! -s "`which curl`" ] ; then
+    wget --no-check-certificate --quiet --output-document=- "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #wget --no-check-certificate --quiet --output-document=- "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #wget --no-check-certificate --quiet --output-document=- "ip.6655.com/ip.aspx" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #wget --no-check-certificate --quiet --output-document=- "ip.3322.net" | grep -E -o '([0-9]+\.){3}[0-9]+'
+	else
+    #curl -L -k -s "http://www.ipip.net" | grep "您当前的IP：" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #curl -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+    curl -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
+    #curl -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
+	fi
+	}
+	arIpAddress=$(arIpAddress)
     ;;
   'SunOS')
     echo 'Solaris'
@@ -44,6 +64,8 @@ case $(uname) in
     ;;
   *) ;;
 esac
+
+arIpAddress=$(arIpAddress)
 
 # Get script dir
 # See: http://stackoverflow.com/a/29835459/4449544
@@ -139,7 +161,7 @@ arDdnsInfo() {
 # Get data
 # arg: type data
 arApiPost() {
-    local agent="AnripDdns/5.07(mail@anrip.com)"
+    local agent="DDnspod/5.08+"
     local inter="https://dnsapi.cn/${1:?'Info.Version'}"
     if [ "x${arToken}" = "x" ]; then # undefine token
         local param="login_email=${arMail}&login_password=${arPass}&format=json&${2}"
@@ -189,14 +211,14 @@ arDdnsCheck() {
     local lastIP
     local hostIP=$(arIpAddress)
     echo "Updating Domain: ${2}.${1}"
-    echo "hostIP: ${hostIP}"
+    echo "HostIP: ${hostIP}"
     lastIP=$(arDdnsInfo $1 $2)
     if [ $? -eq 0 ]; then
-        echo "lastIP: ${lastIP}"
+        echo "LastIP: ${lastIP}"
         if [ "$lastIP" != "$hostIP" ]; then
             postRS=$(arDdnsUpdate $1 $2)
             if [ $? -eq 0 ]; then
-                echo "postRS: ${postRS}"
+                echo "PostRS: ${postRS}"
                 return 0
             else
                 echo ${postRS}

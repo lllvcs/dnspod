@@ -11,7 +11,7 @@
 配置文件格式：
 ```
 # 安全起见，不推荐使用密码认证
-# arMail="test@gmail.com"
+# arMail="Your_E-mail_Address"
 # arPass="123"
 
 # 推荐使用Token认证
@@ -39,8 +39,11 @@ arDdnsCheck "test.org" "subdomain"
 - 进一步POSIX化，支持Mac和大部分Linux发行版
 - 更改配置文件格式
 
+2018/4/29
+- 改为从外网(ipip.net等)获取ip地址
+
 # Credit
 
 Original: anrip
 
-This version maintained by ProfFan
+This version maintained by LLLVCS
