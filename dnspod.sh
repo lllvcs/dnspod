@@ -12,17 +12,17 @@ subdomain="Your_Sub_Domain_Name"
 arIpAddress() {
     curltest=$(which curl)
     if [ -z "$curltest" ] || [ ! -s "$(which curl)" ]; then
-        curl -L -k -s "https://api.ip.la" | grep -E -o '([0-9]+\.){3}[0-9]+'
-        #curl -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
-        #curl -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
-        #curl -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
-        #curl -k -s ip.sb | grep -E -o '([0-9]+\.){3}[0-9]+'
+        curl -4 -L -k -s ip.sb | grep -E -o '([0-9]+\.){3}[0-9]+'
+        #curl -4 -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
+        #curl -4 -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
+        #curl -4 -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
+        #curl -4 -k -s api.myip.la | grep -E -o '([0-9]+\.){3}[0-9]+'
     else
-        wget --no-check-certificate --quiet --output-document=- "https://api.ip.la" | grep -E -o '([0-9]+\.){3}[0-9]+'
+        wget --no-check-certificate --quiet --output-document=- "http://ip.sb" | grep -E -o '([0-9]+\.){3}[0-9]+'
         #wget --no-check-certificate --quiet --output-document=- "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
         #wget --no-check-certificate --quiet --output-document=- "ip.6655.com/ip.aspx" | grep -E -o '([0-9]+\.){3}[0-9]+'
         #wget --no-check-certificate --quiet --output-document=- "ip.3322.net" | grep -E -o '([0-9]+\.){3}[0-9]+'
-        #wget --no-check-certificate --quiet --output-document=- "ip.sb" | grep -E -o '([0-9]+\.){3}[0-9]+'
+        #wget --no-check-certificate --quiet --output-document=- "api.myip.la" | grep -E -o '([0-9]+\.){3}[0-9]+'
 
     fi
 }
