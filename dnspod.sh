@@ -1,5 +1,7 @@
 #!/bin/sh
 # 目前dnspod仅支持密钥登录，申请地址 https://console.dnspod.cn/account/token
+# 不支持腾讯云API访问控制!!!
+
 # 请填写Token 域名等信息
 # arToken="你的密钥ID,你的密钥Token"
 # domain="你的主域名"
