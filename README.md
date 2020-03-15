@@ -4,6 +4,10 @@
 
 # Usage
 
+目前dnspod仅支持密钥登录，申请地址 https://console.dnspod.cn/account/token
+
+不支持腾讯云API访问控制!!!
+
 下载dnspod.sh文件，并根据你的配置修改即可。
 
 执行时直接运行`dnspod.sh`，支持cron任务。
@@ -26,6 +30,8 @@ ubuntu/debian
 ```
 apt-get update
 apt-get install wget curl dnsutils openssl cron -y
+wget -N --no-check-certificate https://raw.githubusercontent.com/lllvcs/dnspod/master/dnspod.sh
+OR
 wget -N --no-check-certificate https://gitee.com/lvcs/dnspod/raw/master/dnspod.sh
 chmod +x ./dnspod.sh
 ```
@@ -33,6 +39,8 @@ chmod +x ./dnspod.sh
 centos
 ```
 yum install wget curl bind-utils openssl cron -y
+wget -N --no-check-certificate https://raw.githubusercontent.com/lllvcs/dnspod/master/dnspod.sh
+OR
 wget -N --no-check-certificate https://gitee.com/lvcs/dnspod/raw/master/dnspod.sh
 chmod +x ./dnspod.sh
 ```
