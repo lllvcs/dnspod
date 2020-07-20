@@ -14,7 +14,8 @@ subdomain="Your_Sub_Domain_Name"
 arIpAddress() {
     curltest=$(which curl)
     if [ -z "$curltest" ] || [ ! -s "$(which curl)" ]; then
-        curl -4 -L -k -s ip.sb | grep -E -o '([0-9]+\.){3}[0-9]+'
+        curl -4 -L -k -s whatismyip.akamai.com | grep -E -o '([0-9]+\.){3}[0-9]+'
+        #curl -4 -L -k -s ip.sb | grep -E -o '([0-9]+\.){3}[0-9]+'
         #curl -4 -k -s "http://members.3322.org/dyndns/getip" | grep -E -o '([0-9]+\.){3}[0-9]+'
         #curl -4 -k -s ip.6655.com/ip.aspx | grep -E -o '([0-9]+\.){3}[0-9]+'
         #curl -4 -k -s ip.3322.net | grep -E -o '([0-9]+\.){3}[0-9]+'
